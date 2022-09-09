@@ -19,6 +19,11 @@ import (
 	"github.com/Kridsada-Wannasing/todo/todo"
 )
 
+var (
+	buildcommit = "dev"
+	buildtime   = time.Now().String()
+)
+
 func main() {
 	err := godotenv.Load("local.env")
 	if err != nil {
@@ -33,6 +38,12 @@ func main() {
 	db.AutoMigrate(&todo.Todo{})
 
 	r := gin.Default()
+	r.GET("/x", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"buildcommit": buildcommit,
+			"buildtime":   buildtime,
+		})
+	})
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
