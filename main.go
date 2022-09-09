@@ -24,10 +24,12 @@ func main() {
 		})
 	})
 
-	r.GET("/tokenz", auth.AccessToken)
+	r.GET("/tokenz", auth.AccessToken("==signature=="))
+
+	protected := r.Group("", auth.Protect([]byte("==signature==")))
 
 	handler := todo.NewTodoHandler(db)
-	r.POST("/todos", handler.NewTask)
+	protected.POST("/todos", handler.NewTask)
 
 	r.Run()
 }
