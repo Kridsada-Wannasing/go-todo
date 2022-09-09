@@ -8,7 +8,6 @@ POST {{base_url}}/todos
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-
 {
     "text": "test 1"
 }
