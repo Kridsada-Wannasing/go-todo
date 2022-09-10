@@ -10,6 +10,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"golang.org/x/time/rate"
@@ -47,6 +48,13 @@ func main() {
 	db.AutoMigrate(&todo.Todo{})
 
 	r := gin.Default()
+
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:8080"}
+	config.AllowHeaders = []string{"Origin", "Authorization", "TransactionID"}
+
+	r.Use(cors.New(config))
+
 	r.GET("/healthz", func(c *gin.Context) {
 		c.Status(200)
 	})
